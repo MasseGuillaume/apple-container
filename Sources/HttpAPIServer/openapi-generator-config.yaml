@@ -1,0 +1,8 @@
+generate:
+  - types
+  - server
+accessModifier: internal
+namingStrategy: idiomatic
+filter:
+  paths:
+    - /images/json

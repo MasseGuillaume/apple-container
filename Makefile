@@ -18,7 +18,7 @@ export RELEASE_VERSION ?= $(shell git describe --tags --always)
 export GIT_COMMIT := $(shell git rev-parse HEAD)
 
 # Commonly used locations
-SWIFT := "/usr/bin/swift"
+SWIFT ?= "/usr/bin/swift"
 DESTDIR ?= /usr/local/
 ROOT_DIR := $(shell git rev-parse --show-toplevel)
 BUILD_BIN_DIR = $(shell $(SWIFT) build -c $(BUILD_CONFIGURATION) --show-bin-path)

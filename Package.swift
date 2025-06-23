@@ -36,7 +36,7 @@ let builderShimVersion = "0.2.0"
 
 let package = Package(
     name: "container",
-    platforms: [.macOS("15")],
+    platforms: [.macOS(.v15)],
     products: [
         .library(name: "ContainerSandboxService", targets: ["ContainerSandboxService"]),
         .library(name: "ContainerNetworkService", targets: ["ContainerNetworkService"]),
@@ -58,6 +58,10 @@ let package = Package(
         .package(url: "https://github.com/swift-server/async-http-client.git", from: "1.20.1"),
         .package(url: "https://github.com/orlandos-nl/DNSClient.git", from: "2.4.1"),
         .package(url: "https://github.com/Bouke/DNS.git", from: "1.2.0"),
+        .package(url: "https://github.com/apple/swift-openapi-generator", from: "1.9.0"),
+        .package(url: "https://github.com/apple/swift-openapi-runtime", from: "1.8.2"),
+        .package(url: "https://github.com/swift-server/swift-openapi-hummingbird", from: "2.0.1"),
+        .package(url: "https://github.com/hummingbird-project/hummingbird", from: "2.14.1"),
         scDependency,
     ],
     targets: [
@@ -99,6 +103,18 @@ let package = Package(
                 "ContainerPlugin",
             ],
             path: "Sources/APIServer"
+        ),
+        .executableTarget(
+            name: "container-http-apiserver",
+            dependencies: [
+                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+                .product(name: "OpenAPIHummingbird", package: "swift-openapi-hummingbird"),
+                .product(name: "Hummingbird", package: "hummingbird"),
+            ],
+            path: "Sources/HttpAPIServer",
+            exclude: ["README.md"],
+            plugins: [.plugin(name: "OpenAPIGenerator", package: "swift-openapi-generator")],
+
         ),
         .executableTarget(
             name: "container-runtime-linux",
